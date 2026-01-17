@@ -1,0 +1,8 @@
+streamlit
+langchain-classic>=1.0.1
+langchain-openai>=1.1.7
+langchain-community
+pypdf>=6.6.0
+faiss-cpu
+rank_bm25
+python-dotenv
