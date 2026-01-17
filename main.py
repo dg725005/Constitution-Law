@@ -8,10 +8,6 @@ from langchain_community.vectorstores import FAISS
 from langchain_community.retrievers import BM25Retriever
 from langchain_classic.retrievers import EnsembleRetriever
 from langchain_classic.chains import RetrievalQA
-#import dotenv
-
-# Load environment variables (OPENAI_API_KEY)
-#dotenv.load_dotenv()
 
 PDF_PATH = "IPC_IndianConstitution_merged.pdf"
 FAISS_INDEX_PATH = "faiss_index_store"
@@ -54,12 +50,12 @@ def get_ensemble_retriever():
         embeddings, 
         allow_dangerous_deserialization=True
     )
-    faiss_retriever = vectorstore.as_retriever(search_kwargs={"k": 8})
+    faiss_retriever = vectorstore.as_retriever(search_kwargs={"k": 4})
     
     # 2. Load BM25
     with open(BM25_PKL_PATH, "rb") as f:
         bm25_retriever = pickle.load(f)
-        bm25_retriever.k = 6
+        bm25_retriever.k = 3
         
     # 3. Fuse them using Reciprocal Rank Fusion (RRF)
     ensemble = EnsembleRetriever(
@@ -74,14 +70,14 @@ try:
     
     # Setup the QA Chain
     qa_chain = RetrievalQA.from_chain_type(
-        llm=ChatOpenAI(model="gpt-4o", temperature=1.54),
+        llm=ChatOpenAI(model="gpt-4o", temperature=0),
         retriever=ensemble_retriever,
         return_source_documents=True
     )
 
     # --- UI INTERFACE ---
     with st.form(key='chat_form'):
-        user_query = st.text_area("Search the IPC or Constitution:", placeholder="e.g., What are the rights under Article 21?")
+        user_query = st.text_area("Search the IPC or Constitution:", placeholder="Enter query...")
         submit_button = st.form_submit_button(label='Consult Guide')
 
     if submit_button and user_query:
