@@ -9,7 +9,7 @@ from langchain_community.retrievers import BM25Retriever
 from langchain_classic.retrievers import EnsembleRetriever
 from langchain_classic.chains import RetrievalQA
 
-PDF_PATH = "IPC_IndianConstitution_merged.pdf"
+PDF_PATH = "IPC_IndianConstitution.pdf"
 FAISS_INDEX_PATH = "faiss_index_store"
 BM25_PKL_PATH = "bm25_retriever.pkl"
 
